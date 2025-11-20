@@ -1,95 +1,254 @@
-# EchoAtlas 🌍
+✅ FINAL SINGLE-FILE README.md (Copy & Paste This Entire File)
+---
+title: EchoAtlas
+emoji: 🌍
+colorFrom: indigo
+colorTo: blue
+sdk: streamlit
+app_file: app.py
+pinned: false
+license: mit
+---
 
-EchoAtlas is a cultural intelligence assistant that helps you:
-- Ask region-aware, city-specific cultural questions
-- Get suggested phrases, tone, and gestures
-- Build and browse a memory of past interactions
-- Generate a **Cultural Playbook** for any region/city from your own questions
+# 🌍 EchoAtlas – Cultural Intelligence Assistant
 
-The app is built with **Streamlit**, **LangChain**, and **Chroma** and is designed to be deployed on:
-- Local machine (for development)
-- Streamlit Cloud / Hugging Face Spaces (for demos & hackathons)
+EchoAtlas is a next-generation **cultural intelligence assistant** that helps travelers, immigrants, professionals, and global citizens communicate appropriately across different cities and cultures around the world.
+
+This Hugging Face Space runs the **text-only version** of EchoAtlas (microphone removed), fully optimized for CPU spaces.  
+HF CPU does **not** support real-time WebRTC or Vosk ASR — therefore, voice features are excluded in this version.
 
 ---
 
-## 🏗 Project Structure (high-level)
+# 🚀 What EchoAtlas Can Do
 
-- `app_glass_ultra.py` — main Streamlit UI (EchoAtlas 2.0 glassmorphism version)
-- `app.py` (if present) — small wrapper that imports & runs `app_glass_ultra`
-- `agents/` — memory agent logic (`memory_agent.py`, etc.)
-- `langchain_runner.py` — glue to call the LangChain agent (`run_agent`)
-- `langchain_tools.py` — tools used by the agent
-- `memory_store/` — Chroma DB files (ignored in git)
-- `models/` — local models (e.g., Vosk) (ignored in git)
-- `.streamlit/` — optional Streamlit config
+### 🌏 1. Region-Aware Cultural Phrasing
+Ask questions about any:
+- Country  
+- State or province  
+- City  
 
-> Note: `env/`, `memory_store/`, `models/` and other local-only artifacts are ignored by `.gitignore`.
-
----
-
-## 🧰 Prerequisites
-
-- Python 3.10+ (3.11 recommended)
-- Git
-- (Optional) Virtual environment: `venv` / `conda`
+EchoAtlas returns:
+- Polite phrasing  
+- Tone guidance  
+- Gesture/body-language tips  
+- Etiquette cues  
+- Local do’s & don’ts  
+- Cultural insights  
 
 ---
 
-## 📦 Installation (local)
+### 🧠 2. Conversation Memory (ChromaDB)
 
-Clone the repo:
+EchoAtlas remembers your past questions and responses, grouped by **region + city**, including:
 
-```bash
-git clone https://github.com/suresh24krishnan/echoatlas-app.git
-cd echoatlas-app
+- What you asked  
+- How EchoAtlas responded  
+- Tone, gesture, tips  
+- Mode (text)  
 
-python -m venv env
-# Windows:
-env\\Scripts\\activate
-# macOS / Linux:
-# source env/bin/activate
+You can:
+- Browse memories  
+- Delete memories per location  
+- Reset the entire memory database  
 
-pip install -r requirements.txt
+---
 
-streamlit run app_glass_ultra.py
-streamlit run app.py
+### 📘 3. Dynamic Cultural Profiles
+
+If you choose a **custom country or city**, EchoAtlas automatically generates a tailored culture profile:
+
+- Suggested tone  
+- Suggested gesture  
+- Cultural tip  
+- Example phrasing  
+
+This enables guidance even for uncommon or remote cities.
+
+---
+
+### 📙 4. Cultural Playbook Generator
+
+EchoAtlas synthesizes a full cultural playbook for any region/city, combining:
+
+- Communication style  
+- Etiquette rules  
+- Do’s & don’ts  
+- Patterns from your own previous interactions  
+- Practical examples with “what to say” and “how to act”
+
+You can export the playbook as:
+- 📄 JSON  
+- 📝 Markdown  
+
+---
+
+### 💬 5. Sample Prompt Library
+
+EchoAtlas includes curated prompts for:
+
+- USA  
+- Canada  
+- UK  
+- Australia  
+- Singapore  
+- Germany  
+- France  
+- India (state-specific)
+
+Click a prompt → auto-loads into Ask EchoAtlas.
+
+---
+
+# 🧱 Architecture Overview
+
+
+
+app.py ← Main Streamlit interface (formerly app_glass_ultra.py)
+agents/
+memory_agent.py ← ChromaDB memory logic
+langchain_runner.py ← LLM orchestration
+langchain_tools.py ← (Optional future tools)
+memory_store/ ← Auto-created persistent vector DB
+
+
+### Technologies Used
+- **Streamlit** – UI  
+- **OpenAI GPT-4o-mini** – Cultural reasoning  
+- **LangChain** – Prompt runner  
+- **ChromaDB** – Long-term memory  
+- **JSON-driven modeling** – Cultural profiles  
+
+---
+
+# 🧩 Requirements (Install Automatically on HF)
+
+Your repo must include this `requirements.txt`:
+
+
+
 streamlit
-openai
+openai>=1.0.0
 langchain
 langchain-openai
 chromadb
 tiktoken
 python-dotenv
-
-# For local mic + Vosk experiments (optional)
-streamlit-webrtc
-vosk
-av
-
-# Other utilities
 pydantic
 
-Steps to add it:
+
+No microphone/audio libraries are needed.
+
+---
+
+# 🔧 Environment Variables (HF Spaces)
+
+Go to:
+
+### **Settings → Variables and Secrets**
+
+Add:
+
+
+
+OPENAI_API_KEY = your_openai_key_here
+
+
+This is required for all phrasing, culture generation, and playbook synthesis.
+
+---
+
+# 🚀 Deployment Instructions (Hugging Face)
+
+This README header tells HF to:
+
+- Use the **Streamlit SDK**
+- Run **app.py**
+- Map `$PORT` automatically
+
+HF internally runs:
 
 ```bash
-cd "C:\Personal_Folders\EchoAtlasAppV10"
+streamlit run app.py --server.address 0.0.0.0 --server.port $PORT
 
-# make sure you're on the repo root
-echo (or create via editor) README.md
 
-git add README.md
-git commit -m "Add README for EchoAtlas"
-git push
-env/
-.venv/
-venv/
-__pycache__/
-memory_store/
-models/
-.streamlit/
-*.pyc
-*.log
-.env
-git add .gitignore
-git commit -m "Update .gitignore to ignore env, models, memory"
-git push
+You do not need to configure anything else.
+
+🏃 Running EchoAtlas Locally
+
+You can also run this on your laptop:
+
+streamlit run app.py
+
+
+Set your OpenAI key:
+
+Windows:
+set OPENAI_API_KEY=your_key
+
+Mac/Linux:
+export OPENAI_API_KEY=your_key
+
+🧪 Memory Storage
+
+EchoAtlas automatically creates:
+
+/memory_store/
+
+
+On Hugging Face:
+
+Memory persists across container restarts
+
+Only a factory-reset deletes it
+
+❓ FAQ
+❓ Does this version support microphone/voice?
+
+No — Hugging Face CPU Spaces do not support:
+
+WebRTC
+
+Vosk ASR
+
+Real-time audio streaming
+
+A Deepgram/Whisper version can be built, but needs Streamlit Cloud / Railway / Render.
+
+❓ Does memory persist after restart?
+
+Yes — Hugging Face preserves workspace files.
+
+❓ Does EchoAtlas work offline?
+
+No — it requires OpenAI GPT-4o-mini.
+
+❓ Can you help deploy a voice-enabled version?
+
+Yes — I can generate:
+
+Deepgram streaming version
+
+Whisper Realtime version
+
+Gradio version
+
+Streamlit Cloud version
+
+Just ask.
+
+💙 Credits
+
+Built using:
+
+Streamlit
+
+OpenAI GPT-4o
+
+LangChain
+
+ChromaDB
+
+Python
+
+Created by Suresh Krishnan
+Assisted by ChatGPT
